@@ -15,6 +15,9 @@
  */
 package com.example.android.datafrominternet.utilities;
 
+import android.net.Uri;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -45,8 +48,18 @@ public class NetworkUtils {
      * @return The URL to use to query the weather server.
      */
     public static URL buildUrl(String githubSearchQuery) {
-        // TODO (1) Fill in this method to build the proper Github query URL
-        return null;
+        Uri.Builder builder = Uri.parse(GITHUB_BASE_URL).buildUpon();
+        builder.appendQueryParameter(PARAM_QUERY, githubSearchQuery);
+        builder.appendQueryParameter(PARAM_SORT, sortBy);
+        Uri androidUri = builder.build();
+        URL url = null;
+        try {
+            url = new URL(androidUri.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i("NetworkUtils", url.toString());
+        return url;
     }
 
     /**
